@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pmrapp-config-files
+data:
+  jobDefinition.json: |
+    {
+      "info_type_id": "PmData",
+      "job_owner": "console",
+      "job_definition": {
+         "filter": {
+            "sourceNames": [],
+            "measObjInstIds": [],
+            "measTypeSpecs": [],
+            "measuredEntityDns": []
+         }
+      }
+    }
+  

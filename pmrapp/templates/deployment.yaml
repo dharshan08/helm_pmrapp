@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pm-rapp
+  labels:
+    app: pm-rapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pm-rapp
+  template:
+    metadata:
+      labels:
+        app: pm-rapp
+    spec:
+      containers:
+        - name: pm-rapp
+          image: sknrao/pm-rapp:j-release
+          env:
+            - name: APPID
+              value: "pm-rapp"
+            - name: APPNS
+              value: "nonrtric"
+            - name: KAFKA_SERVER
+              value: "kafka:9092"
+            - name: ICS
+              value: "ics:8083"
+            - name: TOPIC
+              value: "pmreports"
+            - name: LOG_PAYLOAD
+              value: "1"
+            - name: GZIP
+              value: ""
+            - name: CREDS_GRANT_TYPE
+              value: "client_credentials"
+            - name: CREDS_CLIENT_ID
+              value: "pm-rapp"
+            - name: CREDS_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: pm-rapp-secret
+                  key: CREDS_CLIENT_SECRET
+          volumeMounts:
+            - name: config-files-volume
+              mountPath: /config
+      volumes:
+        - name: config-files-volume
+          configMap:
+            name: pmrapp-config-files
+
